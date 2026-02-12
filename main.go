@@ -3,10 +3,12 @@ package main
 import (
 	"net/http"
 	"sync"
+	"fmt"
 )
 
 func main() {
-	totalRequests := 1000000
+	// totalRequests := 1000000
+	totalRequests := 1000
 	concurrency := 200 // number of goroutines
 	targets := []string{
 		"http://localhost:8081",
@@ -27,6 +29,7 @@ func main() {
 				url := targets[j%len(targets)] // simple round-robin
 				resp, err := client.Get(url)
 				if err != nil {
+					fmt.Println("Server not reachable:", err)
 					continue
 				}
 				resp.Body.Close()
